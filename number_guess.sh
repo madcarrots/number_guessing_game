@@ -34,7 +34,7 @@ GAME_INFO=$($PSQL -c "$QUERY")
 
 # If nothing was returned, the user doesn't exist 
 if [ -z "$GAME_INFO" ]; then
-  echo "I could not find you in the database."
+  echo "Welcome, $USERNAME! It looks like this is your first time here."
 
   # Create INSERT statement
   INSERT_USERNAME_STATEMENT="
@@ -45,7 +45,6 @@ if [ -z "$GAME_INFO" ]; then
   # Run the INSERT 
   $PSQL -c "$INSERT_USERNAME_STATEMENT"
 
-  echo "Welcome, $USERNAME! It looks like this is your first time here." 
 else
   # Parse the pipe-separated result into variables
   # variables match the order of the query items
@@ -65,5 +64,20 @@ fi
 # The next line printed should be Guess the secret number between 1 and 1000: and input from the user should be read
 echo "Guess the secret number between 1 and 1000:"
 read GUESS
+
+# While loop continues as long as GUESS does NOT equal SECRET_NUMBER
+while [ "$GUESS" -ne "$GENERATED_NUMBER" ]; do
+   ((NUMBER_OF_GUESSES += 1))
+  if [ "$GUESS" -gt "$GENERATED_NUMBER" ]; then
+    echo "It's lower than that, guess again:"
+  else
+      echo "It's higher than that, guess again:"    
+  fi
+  read GUESS
+done
+
 ((NUMBER_OF_GUESSES += 1))
+echo "You guessed it in $NUMBER_OF_GUESSES tries. The secret number was $GENERATED_NUMBER. Nice job!"
+    
+
 
