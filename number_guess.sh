@@ -39,15 +39,15 @@ if [ -z "$GAME_INFO" ]; then
   # Create INSERT statement
   INSERT_USERNAME_STATEMENT="
     INSERT INTO records(username, number_of_guesses, secret_number, games_played, best_game) 
-    VALUES ('$USERNAME', 0, $GENERATED_NUMBER, 0, NULL );
+    VALUES ('$USERNAME', 0, $GENERATED_NUMBER, 0, 1000000 );
   "
 
   # Run the INSERT 
   $PSQL -c "$INSERT_USERNAME_STATEMENT"
 
-  echo "username added" 
+  echo "Welcome, $USERNAME! It looks like this is your first time here." 
 else
-  echo "Welcome back, $USERNAME!"
+  echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
 
 echo "$USERNAME"
