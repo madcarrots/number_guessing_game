@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # connection information 
-PSQL="psql -q --username=freecodecamp --dbname=number_guess -t -A -F '|'"
+PSQL="psql -q --username=freecodecamp --dbname=number_guess -t --no-align -F '|'"
 
 # generate random number
 GENERATED_NUMBER=$(( (RANDOM % 1001) + 1 ))
-echo "$GENERATED_NUMBER"
 
 echo -e 'Enter your username:'
 read USER
@@ -35,11 +34,15 @@ GAME_INFO=$($PSQL -c "$QUERY")
 # If nothing was returned, the user doesn't exist 
 if [ -z "$GAME_INFO" ]; then
   echo "Welcome, $USERNAME! It looks like this is your first time here."
+  # new user default values
+  GAMES_PLAYED=0
+  BEST_GAME=1000000
+  NUMBER_OF_GUESSES=0
 
   # Create INSERT statement
   INSERT_USERNAME_STATEMENT="
     INSERT INTO records(username, number_of_guesses, secret_number, games_played, best_game) 
-    VALUES ('$USERNAME', 0, $GENERATED_NUMBER, 0, 1000000 );
+    VALUES ('$USERNAME', 0, $GENERATED_NUMBER, $GAMES_PLAYED, $BEST_GAME );
   "
 
   # Run the INSERT 
@@ -60,6 +63,9 @@ else
   # Welcome back, <username>! You have played <games_played> games, and your best game took <best_game> guesses.
   echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
+
+# reset number of guesses for current game (works for both new and returning users)
+NUMBER_OF_GUESSES=0
 
 # The next line printed should be Guess the secret number between 1 and 1000: and input from the user should be read
 echo "Guess the secret number between 1 and 1000:"
@@ -113,6 +119,3 @@ fi
 
 # Finale output
 echo "You guessed it in $NUMBER_OF_GUESSES tries. The secret number was $GENERATED_NUMBER. Nice job!"
-    
-
-
