@@ -5,9 +5,11 @@ GENERATED_NUMBER=$(( (RANDOM % 1001) + 1 ))
 echo $GENERATED_NUMBER
 
 echo -e '\nEnter your username:'
-read USERNAME
+read USER
 
 # convert username to all caps
+USERNAME=$(echo $USER | tr [:lower:] [:upper:])
+
 
 # Use converted username as WHERE
 
