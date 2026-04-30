@@ -33,7 +33,7 @@ GAME_INFO=$($PSQL -c "$QUERY")
 
 # If nothing was returned, the user doesn't exist 
 if [ -z "$GAME_INFO" ]; then
-  echo "Welcome, $USERNAME! It looks like this is your first time here."
+  echo "Welcome, $USER! It looks like this is your first time here."
   # new user default values
   GAMES_PLAYED=0
   BEST_GAME=1000000
@@ -61,7 +61,7 @@ else
   BEST_GAME="${BEST_GAME//\'/}"
 
   # Welcome back, <username>! You have played <games_played> games, and your best game took <best_game> guesses.
-  echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
+  echo "Welcome back, $USER! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
 
 # reset number of guesses for current game (works for both new and returning users)
