@@ -63,20 +63,33 @@ fi
 
 # The next line printed should be Guess the secret number between 1 and 1000: and input from the user should be read
 echo "Guess the secret number between 1 and 1000:"
+
 read GUESS
 
-
-
-# While loop continues as long as GUESS does NOT equal SECRET_NUMBER
-while [ "$GUESS" -ne "$GENERATED_NUMBER" ]; do
-   ((NUMBER_OF_GUESSES += 1))
-  if [ "$GUESS" -gt "$GENERATED_NUMBER" ]; then
-    echo "It's lower than that, guess again:"
-  else
-      echo "It's higher than that, guess again:"    
-  fi
+# Integer guesses only
+while [[ ! $GUESS =~ ^[0-9]+$ ]]; do
+  echo "That is not an integer, guess again:"
   read GUESS
 done
+
+
+  # While loop continues as long as GUESS does NOT equal SECRET_NUMBER
+  while [ "$GUESS" -ne "$GENERATED_NUMBER" ]; do
+    ((NUMBER_OF_GUESSES += 1))
+
+    if [ "$GUESS" -gt "$GENERATED_NUMBER" ]; then
+      echo "It's lower than that, guess again:"
+    else
+      echo "It's higher than that, guess again:"    
+    fi
+    read GUESS
+    while [[ ! $GUESS =~ ^[0-9]+$ ]]; do
+      echo "That is not an integer, guess again:"
+      read GUESS
+    done
+  done
+
+
 
 # Increment number of guesses once more and games played once
 ((NUMBER_OF_GUESSES += 1))
