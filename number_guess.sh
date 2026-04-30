@@ -77,6 +77,17 @@ while [ "$GUESS" -ne "$GENERATED_NUMBER" ]; do
 done
 
 ((NUMBER_OF_GUESSES += 1))
+((GAMES_PLAYED += 1))
+
+# update best guess, games_played, 
+# Create INSERT statement
+  UPDATE_SCORES_STATEMENT="
+    INSERT INTO records(games_played, best_game) 
+    VALUES (, 0, $GENERATED_NUMBER, 0, 1000000 );
+  "
+
+
+
 echo "You guessed it in $NUMBER_OF_GUESSES tries. The secret number was $GENERATED_NUMBER. Nice job!"
     
 
