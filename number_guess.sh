@@ -38,14 +38,16 @@ if [ -z "$GAME_INFO" ]; then
 
   # Create INSERT statement
   INSERT_USERNAME_STATEMENT="
-    INSERT INTO records(username) 
-    VALUES ('$USERNAME');
+    INSERT INTO records(username, number_of_guesses, secret_number, games_played, best_game) 
+    VALUES ('$USERNAME', 0, $GENERATED_NUMBER, 0, NULL );
   "
 
   # Run the INSERT 
   $PSQL -c "$INSERT_USERNAME_STATEMENT"
 
   echo "username added" 
+else
+  echo "Welcome back, $USERNAME!"
 fi
 
 echo "$USERNAME"
