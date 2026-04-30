@@ -10,8 +10,8 @@ read USER
 # convert username to all caps
 USERNAME=$(echo $USER | tr [:lower:] [:upper:])
 
-
 # Use converted username as WHERE
+WHERE="username = '$USERNAME'"
 
 # Create query 
 QUERY="
