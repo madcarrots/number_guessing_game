@@ -65,6 +65,8 @@ fi
 echo "Guess the secret number between 1 and 1000:"
 read GUESS
 
+
+
 # While loop continues as long as GUESS does NOT equal SECRET_NUMBER
 while [ "$GUESS" -ne "$GENERATED_NUMBER" ]; do
    ((NUMBER_OF_GUESSES += 1))
@@ -76,18 +78,27 @@ while [ "$GUESS" -ne "$GENERATED_NUMBER" ]; do
   read GUESS
 done
 
+# Increment number of guesses once more and games played once
 ((NUMBER_OF_GUESSES += 1))
 ((GAMES_PLAYED += 1))
+
+if [ "$NUMBER_OF_GUESSES" -lt "$BEST_GAME" ]; then
+  BEST_GAME=$NUMBER_OF_GUESSES
+fi 
 
 # update best guess, games_played, 
 # Create INSERT statement
   UPDATE_SCORES_STATEMENT="
-    INSERT INTO records(games_played, best_game) 
-    VALUES (, 0, $GENERATED_NUMBER, 0, 1000000 );
+    UPDATE records
+    SET games_played = $GAMES_PLAYED,
+        best_game = $BEST_GAME
+    WHERE $WHERE;
   "
 
+# Run the UPDATE
+  $PSQL -c "$UPDATE_SCORES_STATEMENT"
 
-
+# Finale output
 echo "You guessed it in $NUMBER_OF_GUESSES tries. The secret number was $GENERATED_NUMBER. Nice job!"
     
 
