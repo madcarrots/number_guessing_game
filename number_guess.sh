@@ -1,5 +1,8 @@
 #! /bin/bash
 
+#connection information
+PSQL="psql --username=freecodecamp --dbname=number_guess -t -A -F '|'"
+
 # generate random number
 GENERATED_NUMBER=$(( (RANDOM % 1001) + 1 ))
 echo $GENERATED_NUMBER
@@ -25,7 +28,14 @@ QUERY="
     records
   WHERE $WHERE;  
 "
-# If WHERE not found
+
+# Run the query and capture the result
+GAME_INFO=$($PSQL -c "$QUERY")
+
+# If nothing was returned, then the user doesn't exist
+if [ -z "$GAME_INFO" ]; then
+  echo "I could not find you in the database."
+fi
 
 # Add WHERE to database
 
